@@ -1,0 +1,45 @@
+{
+  "name": "Getting Started Example",
+  "version": "1.0",
+  "description": "take notes in the browser!",
+  "permissions": [
+    "alarms",
+    "contextMenus",
+    "identity",
+    "identity.email",
+    "notifications",
+    "storage",
+    "tabs",
+    "*://*/*"
+  ],
+  "background": {
+    "scripts": [ "background.js" ],
+    "persistent": false
+  },
+  "commands": {
+    "save-note": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "windows": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Save current selection as note"
+    }
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/note16.png",
+      "32": "images/note32.png",
+      "48": "images/note48.png",
+      "128": "images/note128.png"
+    }
+  },
+  "icons": {
+    "16": "images/note16.png",
+    "32": "images/note32.png",
+    "48": "images/note48.png",
+    "128": "images/note128.png"
+  },
+  "manifest_version": 2
+}

@@ -1,1 +1,1 @@
-# note-buddy
+hurray let's get started!
