@@ -2,7 +2,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'randomID',
     contexts: ['selection'],
-    title: 'asdfasdfasdf',
+    title: 'save note ฅ^•ﻌ•^ฅ',
   });
 });
 
@@ -17,7 +17,6 @@ chrome.commands.onCommand.addListener(function (command) {
       code: 'window.getSelection().toString();'
     }, selection => {
       const note = selection[0];
-      console.log('test print!@####@');
       saveNote(note);
     });
   }
@@ -35,10 +34,11 @@ function saveNote(note) {
   chrome.identity.getProfileUserInfo(userInfo => {
     const email = userInfo.email;
     const storageKey = email + ':notebuddy';
-    chrome.storage.local.get([storageKey], result => {
+    chrome.storage.local.get(storageKey, result => {
+      const storedNote = result[storageKey];
       let updatedNote;
-      if (result.storageKey) {
-        updatedNote = result.storageKey + '\n' + note;
+      if (storedNote) {
+        updatedNote = storedNote + '\n\n' + note;
       } else {
         updatedNote = note;
       }
@@ -49,6 +49,8 @@ function saveNote(note) {
           title: 'Note Buddy',
           message: 'Successfully saved note ✿',
         }, () => {
+          console.log('@ successfully stored note @@@');
+          console.log(updatedNote);
           const notificationDuration = 1400;
           chrome.alarms.create(
             'notificationClearAlarm',
