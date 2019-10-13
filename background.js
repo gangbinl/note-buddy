@@ -37,18 +37,27 @@ chrome.alarms.onAlarm.addListener(() => {
 
 
 
-const abc = {
+/*const abc = {
   date: new Date(),
   address: window.location.href
 };
 
-/* info에 date, address, 
+info에 date, address, 
     saveNote --> info
     object로 처리해서 같은  url이면 한번만 뜨게 
 
 
 */
 
+chrome.browserAction.onClicked.addListener(tab => {
+  console.log('@ page action clicked');
+  console.log(tab);
+  chrome.tabs.create({
+    url: 'notepage.html'
+  }, () => {
+    console.log('tab created');
+  });
+});
 
 function saveNote(note) {
   chrome.identity.getProfileUserInfo(userInfo => {
