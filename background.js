@@ -8,7 +8,8 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(info => {
   const note = info.selectionText;
-  saveNote(note);
+  const address = window.location.href;
+  saveNote(note, address);
 });
 
 chrome.commands.onCommand.addListener(function (command) {
@@ -30,7 +31,8 @@ chrome.alarms.onAlarm.addListener(() => {
   });
 });
 
-function saveNote(note) {
+
+function saveNote(note, address) {
   chrome.identity.getProfileUserInfo(userInfo => {
     const email = userInfo.email;
     const storageKey = email + ':notebuddy';
@@ -38,9 +40,10 @@ function saveNote(note) {
       const storedNote = result[storageKey];
       let updatedNote;
       if (storedNote) {
-        updatedNote = storedNote + '\n\n' + note;
+        updatedNote = storedNote + '\n\n' + note + '\n\n' + address;
+        //hashmap & object to pull out info again
       } else {
-        updatedNote = note;
+        updatedNote = note + '\n\n' + address;
       }
       chrome.storage.local.set({ [storageKey]: updatedNote }, () => {
         chrome.notifications.create({
