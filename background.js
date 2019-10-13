@@ -8,8 +8,8 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(info => {
   const note = info.selectionText;
-  const address = window.location.href;
-  saveNote(note, address);
+  saveNote(note);
+
 });
 
 chrome.commands.onCommand.addListener(function (command) {
@@ -31,8 +31,26 @@ chrome.alarms.onAlarm.addListener(() => {
   });
 });
 
+//hashmap : key가 다르게 key&value 묶어서 
+//new object for date, address
 
-function saveNote(note, address) {
+
+
+
+const abc = {
+  date: new Date(),
+  address: window.location.href
+};
+
+/* info에 date, address, 
+    saveNote --> info
+    object로 처리해서 같은  url이면 한번만 뜨게 
+
+
+*/
+
+
+function saveNote(note) {
   chrome.identity.getProfileUserInfo(userInfo => {
     const email = userInfo.email;
     const storageKey = email + ':notebuddy';
@@ -40,10 +58,10 @@ function saveNote(note, address) {
       const storedNote = result[storageKey];
       let updatedNote;
       if (storedNote) {
-        updatedNote = storedNote + '\n\n' + note + '\n\n' + address;
-        //hashmap & object to pull out info again
+        updatedNote = storedNote + '\n\n' + note;
+       
       } else {
-        updatedNote = note + '\n\n' + address;
+        updatedNote = note;
       }
       chrome.storage.local.set({ [storageKey]: updatedNote }, () => {
         chrome.notifications.create({
