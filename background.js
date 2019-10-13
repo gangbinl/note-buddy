@@ -31,6 +31,15 @@ chrome.alarms.onAlarm.addListener(() => {
   });
 });
 
+chrome.browserAction.onClicked.addListener(tab => {
+  console.log('@ page action clicked');
+  console.log(tab);
+  chrome.tabs.create({
+    url: 'notepage.html'
+  }, () => {
+    console.log('tab created');
+  });
+});
 
 function saveNote(note, address) {
   chrome.identity.getProfileUserInfo(userInfo => {

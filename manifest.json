@@ -26,8 +26,7 @@
       "description": "Save current selection as note"
     }
   },
-  "page_action": {
-    "default_popup": "popup.html",
+  "browser_action": {
     "default_icon": {
       "16": "images/note16.png",
       "32": "images/note32.png",
