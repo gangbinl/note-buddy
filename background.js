@@ -6,15 +6,15 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-
 chrome.contextMenus.onClicked.addListener(info => {
   const note = info.selectionText;
 
-  saveNote(note);
+  chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+     address = tabs[0].url;
+    });
+  saveNote(note, address);
   
 });
-
-
 
 chrome.commands.onCommand.addListener(function (command) {
   if (command === 'save-note') {
@@ -22,9 +22,10 @@ chrome.commands.onCommand.addListener(function (command) {
       code: 'window.getSelection().toString();'
     }, selection => {
       const note = selection[0];
-
-      saveNote(note);
-      
+      chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+           address = tabs[0].url;
+        });
+      saveNote(note, address);
     });
   }
 });
@@ -37,36 +38,6 @@ chrome.alarms.onAlarm.addListener(() => {
   });
 });
 
-//hashmap : key가 다르게 key&value 묶어서 
-//new object for date, address
-
-
-
-
-const abc = {
-  date: new Date(),
-  address: window.location.href
-  //address: document.URL
-};
-
-chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
- tablink = tabs[0].url;
- var tab = tabs[0];
- console.log(tab.url);
- //tablink = window.location.href; 이거 하면 notepage url뜸 d
-});
-
-
-
-
-/*
-info에 date, address, 
-    saveNote --> info
-    object로 처리해서 같은  url이면 한번만 뜨게 
-
-
-*/
-
 chrome.browserAction.onClicked.addListener(tab => {
   console.log('@ page action clicked');
   console.log(tab);
@@ -77,18 +48,31 @@ chrome.browserAction.onClicked.addListener(tab => {
   });
 });
 
-function saveNote(note) {
+function saveNote(note, address) {
   chrome.identity.getProfileUserInfo(userInfo => {
     const email = userInfo.email;
     const storageKey = email + ':notebuddy';
+    
     chrome.storage.local.get(storageKey, result => {
       const storedNote = result[storageKey];
       let updatedNote;
       if (storedNote) {
-        updatedNote = storedNote + '\n\n' + note + tablink;
-       
+          tmp = {
+                  text : storedNote + '\n\n' + note,
+                  adrs : address,
+                  date : new Date()
+          }
+          updatedNote = tmp.text + '\n\n' + tmp.adrs +'\n\n'+ tmp.date;
+        // updatedNote = storedNote + '\n\n' + note + '\n\n' + address;
+
       } else {
-        updatedNote = note + tablink;
+        //updatedNote = note + '\n\n' + address;
+        tmp = {
+          text : note,
+          adrs : address,
+          date : new Date()
+          }
+          updatedNote = tmp.text + '\n\n' + tmp.adrs +'\n\n'+ tmp.date;
       }
       chrome.storage.local.set({ [storageKey]: updatedNote }, () => {
         chrome.notifications.create({

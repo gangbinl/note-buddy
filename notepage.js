@@ -12,9 +12,6 @@ function updateClock() {
 }
 
 
-//url
-//window.location.href
-
 chrome.identity.getProfileUserInfo(userInfo => {
   const email = userInfo.email;
   const storageKey = email + ':notebuddy';
@@ -23,7 +20,6 @@ chrome.identity.getProfileUserInfo(userInfo => {
     const noteDiv = document.createElement('div');
     noteDiv.innerHTML = storedNote;
     document.body.appendChild(noteDiv);
-    console.log(storedNote);
   });
 });
 
