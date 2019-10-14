@@ -1,0 +1,10 @@
+body {
+  margin: 40px auto;
+  max-width: 650px;
+  line-height: 1.6;
+  font-size: 14px;
+  color: #444;
+  padding: 0 10px;
+  font-family: 'Open Sans', sans-serif;
+  white-space: pre-line;
+}
