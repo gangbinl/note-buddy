@@ -6,11 +6,15 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+
 chrome.contextMenus.onClicked.addListener(info => {
   const note = info.selectionText;
-  saveNote(note);
 
+  saveNote(note);
+  
 });
+
+
 
 chrome.commands.onCommand.addListener(function (command) {
   if (command === 'save-note') {
@@ -18,7 +22,9 @@ chrome.commands.onCommand.addListener(function (command) {
       code: 'window.getSelection().toString();'
     }, selection => {
       const note = selection[0];
+
       saveNote(note);
+      
     });
   }
 });
@@ -37,11 +43,23 @@ chrome.alarms.onAlarm.addListener(() => {
 
 
 
-/*const abc = {
+const abc = {
   date: new Date(),
   address: window.location.href
+  //address: document.URL
 };
 
+chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+ tablink = tabs[0].url;
+ var tab = tabs[0];
+ console.log(tab.url);
+ //tablink = window.location.href; 이거 하면 notepage url뜸 d
+});
+
+
+
+
+/*
 info에 date, address, 
     saveNote --> info
     object로 처리해서 같은  url이면 한번만 뜨게 
@@ -67,10 +85,10 @@ function saveNote(note) {
       const storedNote = result[storageKey];
       let updatedNote;
       if (storedNote) {
-        updatedNote = storedNote + '\n\n' + note;
+        updatedNote = storedNote + '\n\n' + note + tablink;
        
       } else {
-        updatedNote = note;
+        updatedNote = note + tablink;
       }
       chrome.storage.local.set({ [storageKey]: updatedNote }, () => {
         chrome.notifications.create({
