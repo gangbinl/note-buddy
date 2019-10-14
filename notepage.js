@@ -23,6 +23,7 @@ chrome.identity.getProfileUserInfo(userInfo => {
     const noteDiv = document.createElement('div');
     noteDiv.innerHTML = storedNote;
     document.body.appendChild(noteDiv);
+    console.log(storedNote);
   });
 });
 

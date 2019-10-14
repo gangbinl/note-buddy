@@ -1,1 +1,1 @@
-hurray let's get started!
+Organize your notes in the browser!
