@@ -1,1 +1,1 @@
-Organize your notes in the browser!
+📄✏️ Organize your notes in the browser!
