@@ -83,7 +83,7 @@ function saveNote(note, address) {
         }, () => {
           console.log('@ successfully stored note @@@');
           console.log(updatedNote);
-          const notificationDuration = 1400;
+          const notificationDuration = 2000;
           chrome.alarms.create(
             'notificationClearAlarm',
             { when: Date.now() + notificationDuration }
